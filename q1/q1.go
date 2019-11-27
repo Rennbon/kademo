@@ -20,7 +20,7 @@ const (
 	icon_black = "⚫️"
 
 	str_white = "白棋"
-	str_black = "黑旗"
+	str_black = "黑棋"
 )
 
 var (
@@ -30,13 +30,17 @@ var (
 )
 
 type Chesser interface {
+	//打印
 	PrintM()
-
+	//落子
 	SetOneChess(col, row uint8, chess point)
-
+	//随机数
 	randPoint() (col, row uint8)
+	//剩余可落子数
 	remain() int
+	//计算胜利
 	calcWin(p point) bool
+	//清空棋子
 	clear()
 }
 type ChessBoard struct {
@@ -105,6 +109,7 @@ func (o *ChessBoard) calcWin(p point) bool {
 	// 0 1 1 1 1 1 1 1 -> byte
 	//check line
 	bits := [7]uint8{}
+	// 6横6组数据 7有效长度
 	//fmt.Println("---------横--------")
 	for _, row := range o.x {
 		for k, pi := range row {
@@ -115,29 +120,37 @@ func (o *ChessBoard) calcWin(p point) bool {
 			}
 		}
 		if o.checkLineWin(bits) {
+			fmt.Println("横线方向")
 			return true
 		}
 	}
+	bits = [7]uint8{}
+	//7竖7组 6有效长度
 	//fmt.Println("---------竖--------")
-	for i := 0; i < limit_col; i++ {
-		for j := 0; j < limit_row; j++ {
+	for j := 0; j < limit_row; j++ {
+		for i := 0; i < limit_col; i++ {
 			if o.x[i][j] == p {
-				bits[j] = 1
+				bits[i] = 1
 			} else {
-				bits[j] = 0
+				bits[i] = 0
 			}
 		}
 		if o.checkLineWin(bits) {
+			fmt.Println("竖线方向")
 			return true
 		}
 	}
+	//单子左下右下 "^"二叉树样串串，第一排穿光，然后两侧各串头尾"v"
 	//fmt.Println("---------X--------")
 	for turn := 0; turn < limit_col/2+1; turn++ {
-		for i := turn; i < limit_row; i++ {
+		for i := 0; i < limit_row; i++ {
 			bits1 := [7]uint8{}
 			bits2 := [7]uint8{}
 			m, n := 0, 0
-			for j := 0; j < limit_col; j++ {
+			for j := turn; j < limit_col; j++ {
+				if turn > 0 && i > 0 && i < limit_row-1 {
+					continue
+				}
 				l := i + m
 				r := i + n
 				if l >= 0 && l < limit_row {
@@ -160,9 +173,11 @@ func (o *ChessBoard) calcWin(p point) bool {
 			//fmt.Println("loc1:", bits1)
 			//fmt.Println("loc2:", bits2)
 			if o.checkLineWin(bits1) {
+				fmt.Println("↘️")
 				return true
 			}
 			if o.checkLineWin(bits2) {
+				fmt.Println("↗️")
 				return true
 			}
 		}
@@ -226,6 +241,7 @@ func main() {
 	first := true
 	competitor := white
 	compStr := str_white
+	fg := true
 	for i := 1; cb.remain() > 0; i++ {
 		fmt.Printf("-----next:%d------\r\n", i)
 		if first {
@@ -243,9 +259,13 @@ func main() {
 			if competitor == black {
 				compStr = str_black
 			}
-			fmt.Println(compStr, " won ！！！")
+			fmt.Println(compStr, "胜利")
+			fg = false
 			break
 		}
+	}
+	if fg {
+		fmt.Println("平局")
 	}
 	cb.PrintM()
 }
