@@ -2,6 +2,9 @@ package sort
 
 import "fmt"
 
+//找最左边的值为参照值
+//依次从两端的下标逐个往中间移动，碰到大于和小于的时候互相交换位置,最后将参照数和基准线交换位置
+//然后基准线2端的分别再次用快排排序各自的小数组，直到排完
 func QuickSort(list []int) {
 	fmt.Println("quick sort:")
 	newList := make([]int, 1)

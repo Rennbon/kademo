@@ -14,6 +14,7 @@ func RadixSort(list []int) {
 			max = v
 		}
 	}
+	//取最大值的位数
 	log := int(math.Log10(float64(max)))
 	for i := 1; i <= log; i++ {
 		bucket(&list, int(math.Pow10(i)))

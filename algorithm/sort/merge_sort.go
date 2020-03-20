@@ -3,6 +3,7 @@ package sort
 import "fmt"
 
 //将一个数组分解到单len数组，然后两两合并合并在合并
+//每个合并的都会变成有序的，然后依次对比大小添加到有序数组的下一位
 func MergeSort(list []int) {
 	fmt.Println("merge sort:")
 	arr := mergeSort(list)
@@ -21,6 +22,7 @@ func mergeSort(list []int) []int {
 
 func merge(arr1, arr2 []int) []int {
 	cp := len(arr1) + len(arr2)
+	//存放有序新数组
 	ret := make([]int, 0, cp)
 	i, j := 0, 0
 	for i < len(arr1) || j < len(arr2) {

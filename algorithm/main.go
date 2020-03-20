@@ -8,9 +8,11 @@ func main() {
 	/*sort.BubbleSort(list)
 	sort.SelectionSort(list)
 	sort.InsertionSort(list)
-	sort.QuickSort(list)
+
 	sort.HeapSort(list)
 	sort.MergeSort(list)*/
 	//sort.CountingSort(list)
-	sort.RadixSort(list)
+	//sort.RadixSort(list)
+
+	sort.QuickSort(list)
 }
