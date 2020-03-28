@@ -38,13 +38,13 @@ type ChessBoard struct {
 
 func main() {
 	cb := initBoard(board_row, board_col)
-	cb.PrintM()
+	t1 := time.Now()
 
 	player := 1
 	isWin := false
 
 	for i := 1; cb.next(); i++ {
-		fmt.Printf("----%v----", i)
+		fmt.Printf("-----next:%d------\r\n", i)
 		c, r := cb.randPoint()
 		cb.SetOneChess(r, c, player)
 		isWin = cb.IsWin(player)
@@ -53,7 +53,7 @@ func main() {
 			break
 		}
 		player = 3 - player
-		cb.PrintM()
+		//cb.PrintM()
 
 	}
 	cb.PrintM()
@@ -67,6 +67,7 @@ func main() {
 	} else {
 		fmt.Println("平局")
 	}
+	fmt.Println(time.Now().Sub(t1).Nanoseconds())
 }
 
 func initBoard(row, col int) *ChessBoard {
@@ -165,7 +166,6 @@ func (o *ChessBoard) randPoint() (row, col int) {
 	v := o.Blanks[randIdx]
 	col = v / board_col
 	row = v % board_col
-	fmt.Println(row, col)
 	if randIdx == 0 {
 		o.Blanks = o.Blanks[1:]
 	} else if randIdx == len(o.Blanks) {
@@ -176,7 +176,6 @@ func (o *ChessBoard) randPoint() (row, col int) {
 	return
 }
 func (o *ChessBoard) next() bool {
-	fmt.Println(o.Blanks)
 	return len(o.Blanks) > 0
 }
 func (o *ChessBoard) print(p int) {

@@ -229,7 +229,7 @@ func (o *ChessBoard) SetOneChess(col, row uint8, chess point) {
 }
 func main() {
 	cb := newBoard()
-	fmt.Println("-------1.1-------")
+	/*fmt.Println("-------1.1-------")
 	cb.PrintM()
 	fmt.Println("-------1.2-------")
 	cb.SetOneChess(0, 3, black)
@@ -238,7 +238,8 @@ func main() {
 	cb.SetOneChess(3, 5, white)
 	cb.PrintM()
 	fmt.Println("-------2&3-------")
-	cb.clear()
+	cb.clear()*/
+	t1 := time.Now()
 	first := true
 	competitor := white
 	compStr := str_white
@@ -254,8 +255,8 @@ func main() {
 		//fmt.Println(col, row)
 		cb.SetOneChess(col, row, competitor)
 		first = first == false
-		time.Sleep(time.Millisecond * 10)
-		cb.PrintM()
+		//time.Sleep(time.Millisecond * 10)
+		//cb.PrintM()
 		if cb.calcWin(competitor) {
 			if competitor == black {
 				compStr = str_black
@@ -269,4 +270,5 @@ func main() {
 		fmt.Println("平局")
 	}
 	cb.PrintM()
+	fmt.Println(time.Now().Sub(t1).Nanoseconds())
 }
